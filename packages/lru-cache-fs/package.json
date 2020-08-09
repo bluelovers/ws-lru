@@ -1,6 +1,6 @@
 {
   "name": "lru-cache-fs2",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Extends lru-cache to add file system support",
   "keywords": [
     "cache",
@@ -35,9 +35,8 @@
     "env-paths": "^2.2.0",
     "err-code": "^2.0.3",
     "fs-extra": "^9.0.1",
-    "lru-cache2": "^6.0.1"
+    "lru-cache2": "^6.0.2"
   },
-  "devDependencies": {},
   "engine": {
     "node": ">=10"
   },
