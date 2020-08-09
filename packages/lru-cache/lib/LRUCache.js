@@ -47,6 +47,7 @@ class LRUCache {
         this[symbol_1.NO_DISPOSE_ON_SET] = options.noDisposeOnSet || false;
         this[symbol_1.UPDATE_AGE_ON_GET] = options.updateAgeOnGet || false;
         this.reset();
+        return this;
     }
     /**
      * resize the cache when the max changes.
