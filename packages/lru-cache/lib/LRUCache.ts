@@ -76,15 +76,15 @@ export class LRUCache<K, V>
 
 		const lc = options.length || naiveLength
 		this[LENGTH_CALCULATOR] = (typeof lc !== 'function') ? naiveLength : lc
-		this[ALLOW_STALE] = options.stale || false
+		this[ALLOW_STALE] = options.stale ?? false
 		if (options.maxAge && typeof options.maxAge !== 'number')
 		{
 			throw new TypeError('maxAge must be a number')
 		}
 		this[MAX_AGE] = options.maxAge || 0
 		this[DISPOSE] = options.dispose
-		this[NO_DISPOSE_ON_SET] = options.noDisposeOnSet || false
-		this[UPDATE_AGE_ON_GET] = options.updateAgeOnGet || false
+		this[NO_DISPOSE_ON_SET] = options.noDisposeOnSet ?? false
+		this[UPDATE_AGE_ON_GET] = options.updateAgeOnGet ?? false
 		this.reset()
 
 		return this;
@@ -181,20 +181,26 @@ export class LRUCache<K, V>
 	 * Same as Options.length.
 	 */
 	get lengthCalculator()
-	{ return this[LENGTH_CALCULATOR] }
+	{
+		return this[LENGTH_CALCULATOR]
+	}
 
 	/**
 	 * Return total length of objects in cache taking into account `length` options function.
 	 */
 	get length()
-	{ return this[LENGTH] }
+	{
+		return this[LENGTH]
+	}
 
 	/**
 	 * Return total quantity of objects currently in cache. Note,
 	 * that `stale` (see options) items are returned as part of this item count.
 	 */
 	get itemCount()
-	{ return this[LRU_LIST].length }
+	{
+		return this[LRU_LIST].length
+	}
 
 	/**
 	 * The same as `cache.forEach(...)` but items are iterated over in reverse order.
@@ -209,6 +215,8 @@ export class LRUCache<K, V>
 			forEachStep(this, fn, walker, thisp)
 			walker = prev
 		}
+
+		return this
 	}
 
 	/**

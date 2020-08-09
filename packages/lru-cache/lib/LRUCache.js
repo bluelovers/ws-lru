@@ -25,6 +25,7 @@ const del_1 = require("./ internal/del");
  */
 class LRUCache {
     constructor(options) {
+        var _a, _b, _c;
         if (typeof options === 'number') {
             options = { max: options };
         }
@@ -38,14 +39,14 @@ class LRUCache {
         const max = this[symbol_1.MAX] = options.max || Infinity;
         const lc = options.length || naiveLength_1.naiveLength;
         this[symbol_1.LENGTH_CALCULATOR] = (typeof lc !== 'function') ? naiveLength_1.naiveLength : lc;
-        this[symbol_1.ALLOW_STALE] = options.stale || false;
+        this[symbol_1.ALLOW_STALE] = (_a = options.stale) !== null && _a !== void 0 ? _a : false;
         if (options.maxAge && typeof options.maxAge !== 'number') {
             throw new TypeError('maxAge must be a number');
         }
         this[symbol_1.MAX_AGE] = options.maxAge || 0;
         this[symbol_1.DISPOSE] = options.dispose;
-        this[symbol_1.NO_DISPOSE_ON_SET] = options.noDisposeOnSet || false;
-        this[symbol_1.UPDATE_AGE_ON_GET] = options.updateAgeOnGet || false;
+        this[symbol_1.NO_DISPOSE_ON_SET] = (_b = options.noDisposeOnSet) !== null && _b !== void 0 ? _b : false;
+        this[symbol_1.UPDATE_AGE_ON_GET] = (_c = options.updateAgeOnGet) !== null && _c !== void 0 ? _c : false;
         this.reset();
         return this;
     }
@@ -117,16 +118,22 @@ class LRUCache {
      * resize the cache when the lengthCalculator changes.
      * Same as Options.length.
      */
-    get lengthCalculator() { return this[symbol_1.LENGTH_CALCULATOR]; }
+    get lengthCalculator() {
+        return this[symbol_1.LENGTH_CALCULATOR];
+    }
     /**
      * Return total length of objects in cache taking into account `length` options function.
      */
-    get length() { return this[symbol_1.LENGTH]; }
+    get length() {
+        return this[symbol_1.LENGTH];
+    }
     /**
      * Return total quantity of objects currently in cache. Note,
      * that `stale` (see options) items are returned as part of this item count.
      */
-    get itemCount() { return this[symbol_1.LRU_LIST].length; }
+    get itemCount() {
+        return this[symbol_1.LRU_LIST].length;
+    }
     /**
      * The same as `cache.forEach(...)` but items are iterated over in reverse order.
      * (ie, less recently used items are iterated over first.)
@@ -138,6 +145,7 @@ class LRUCache {
             forEachStep_1.forEachStep(this, fn, walker, thisp);
             walker = prev;
         }
+        return this;
     }
     /**
      * Just like `Array.prototype.forEach`. Iterates over all the keys in the cache,

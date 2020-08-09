@@ -85,7 +85,7 @@ export declare class LRUCache<K, V> {
      * The same as `cache.forEach(...)` but items are iterated over in reverse order.
      * (ie, less recently used items are iterated over first.)
      */
-    rforEach(fn: IFn<K, V>, thisp?: LRUCache<K, V>): void;
+    rforEach(fn: IFn<K, V>, thisp?: LRUCache<K, V>): this;
     /**
      * Just like `Array.prototype.forEach`. Iterates over all the keys in the cache,
      * in order of recent-ness. (Ie, more recently used items are iterated over first.)
