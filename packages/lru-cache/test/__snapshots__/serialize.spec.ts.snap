@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`dumpLru 1`] = `
+Yallist {
+  "head": null,
+  "length": 0,
+  "tail": null,
+}
+`;
+
+exports[`load basic cache 1`] = `
+Array [
+  Object {
+    "e": 0,
+    "k": 123,
+    "v": 456,
+  },
+  Object {
+    "e": 0,
+    "k": "b",
+    "v": "B",
+  },
+  Object {
+    "e": 0,
+    "k": "a",
+    "v": "A",
+  },
+]
+`;
