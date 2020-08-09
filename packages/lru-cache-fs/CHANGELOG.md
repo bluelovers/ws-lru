@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.3](https://github.com/bluelovers/ws-lru/compare/lru-cache-fs2@2.0.2...lru-cache-fs2@2.0.3) (2020-08-09)
+
+
+### 🔖　Miscellaneous
+
+* . ([daa6062](https://github.com/bluelovers/ws-lru/commit/daa60626554e30e25fe8522a79b259e27d7df032))
+
+
+
+
+
 ## 2.0.2 (2020-08-09)
 
 
