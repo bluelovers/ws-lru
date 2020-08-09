@@ -1,5 +1,5 @@
 {
-  "name": "lru-cache",
+  "name": "lru-cache2",
   "version": "6.0.0",
   "description": "A cache object that deletes the least-recently-used items.",
   "keywords": [
@@ -25,31 +25,31 @@
     "index.js"
   ],
   "scripts": {
-    "test": "tap",
+    "test": "jest",
     "npm:publish": "npm publish",
     "npm:publish:lerna": "lerna publish --yes --bump patch",
     "preversion": "npm test",
-    "postversion": "npm publish",
-    "prepublishOnly": "git push origin --follow-tags",
-    "prepublishOnly_": "yarn run prepublishOnly:check-bin && yarn run prepublishOnly:update && yarn run test",
+    "prepublishOnly": "yarn run prepublishOnly:update && yarn run test",
     "prepublishOnly:check-bin": "ynpx --quiet @yarn-tool/check-pkg-bin",
     "prepublishOnly:update": "yarn run ncu && yarn run sort-package-json",
-    "postpublish_": "yarn run postpublish:changelog && yarn run postpublish:git:commit && yarn run postpublish:git:tag && yarn run postpublish:git:push",
+    "postpublish": "yarn run postpublish:changelog && yarn run postpublish:git:commit && yarn run postpublish:git:tag && yarn run postpublish:git:push",
     "postpublish:changelog": "ynpx --quiet @yarn-tool/changelog && git add ./CHANGELOG.md",
     "postpublish:git:commit": "git commit -m \"chore(release): publish\" . & echo postpublish:git:commit",
     "postpublish:git:push": "git push --follow-tags",
     "postpublish:git:tag": "ynpx --quiet @yarn-tool/tag",
     "ncu": "yarn-tool ncu -u",
-    "snap": "tap",
+    "snap": "jest -u",
     "sort-package-json": "yarn-tool sort"
   },
   "dependencies": {
+    "@types/yallist": "*",
     "yallist": "^4.0.0"
   },
   "devDependencies": {
     "@bluelovers/tsconfig": "^1.0.20",
     "@types/benchmark": "^1.0.33",
     "@types/jest": "^26.0.9",
+    "@types/lru-cache": "^5.1.0",
     "@types/node": "^14.0.27",
     "@types/yallist": "^3.0.1",
     "benchmark": "^2.1.4",
