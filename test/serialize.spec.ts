@@ -154,7 +154,7 @@ test('load to other size cache', function () {
   expect(copy.get('b')).toBe(undefined)
 })
 
-test('load to other age cache', function (t) {
+test('load to other age cache', function (done) {
   var cache = new LRU({ maxAge: 250 })
   var aged = new LRU({ maxAge: 500 })
   var simple = new LRU()
@@ -219,10 +219,12 @@ test('load to other age cache', function (t) {
     expect(simple.get('a')).toBe(undefined)
     expect(simple.get('b')).toBe(undefined)
     expect(simple.get('c')).toBe(undefined)
+
+    done()
   }, 500)
 })
 
 test('dumpLru', function () {
   var l = new LRU()
-  expect(l.dumpLru()).toBe(Yallist)
+  expect(l.dumpLru()).toBeInstanceOf(Yallist)
 })

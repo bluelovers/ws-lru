@@ -50,15 +50,15 @@ test('keys() and values()', function (done) {
     l.set(i, i.toString(2))
   }
 
-  t.similar(l.keys(), [9, 8, 7, 6, 5])
-  t.similar(l.values(), ['1001', '1000', '111', '110', '101'])
+  expect(l.keys()).toStrictEqual([9, 8, 7, 6, 5])
+  expect(l.values()).toStrictEqual(['1001', '1000', '111', '110', '101'])
 
   // get in order of most recently used
   l.get(6)
   l.get(8)
 
-  t.similar(l.keys(), [8, 6, 9, 7, 5])
-  t.similar(l.values(), ['1000', '110', '1001', '111', '101'])
+  expect(l.keys()).toStrictEqual([8, 6, 9, 7, 5])
+  expect(l.values()).toStrictEqual(['1000', '110', '1001', '111', '101'])
 
   done()
 })

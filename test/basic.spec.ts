@@ -1,17 +1,16 @@
-var test = require('tap').test
 var LRU = require('../')
 
-test('basic', function (t) {
+test('basic', function (done) {
   var cache = new LRU({ max: 10 })
   cache.set('key', 'value')
   expect(cache.get('key')).toBe('value')
   expect(cache.get('nada')).toBe(undefined)
   expect(cache.length).toBe(1)
   expect(cache.max).toBe(10)
-  t.end()
+  done()
 })
 
-test('least recently set', function (t) {
+test('least recently set', function (done) {
   var cache = new LRU(2)
   cache.set('a', 'A')
   cache.set('b', 'B')
@@ -19,10 +18,10 @@ test('least recently set', function (t) {
   expect(cache.get('c')).toBe('C')
   expect(cache.get('b')).toBe('B')
   expect(cache.get('a')).toBe(undefined)
-  t.end()
+  done()
 })
 
-test('lru recently gotten', function (t) {
+test('lru recently gotten', function (done) {
   var cache = new LRU(2)
   cache.set('a', 'A')
   cache.set('b', 'B')
@@ -31,18 +30,18 @@ test('lru recently gotten', function (t) {
   expect(cache.get('c')).toBe('C')
   expect(cache.get('b')).toBe(undefined)
   expect(cache.get('a')).toBe('A')
-  t.end()
+  done()
 })
 
-test('del', function (t) {
+test('del', function (done) {
   var cache = new LRU(2)
   cache.set('a', 'A')
   cache.del('a')
   expect(cache.get('a')).toBe(undefined)
-  t.end()
+  done()
 })
 
-test('max', function (t) {
+test('max', function (done) {
   var cache = new LRU(3)
 
   // test changing the max, verify that the LRU items get dropped.
@@ -78,10 +77,10 @@ test('max', function (t) {
   for (i = 98; i < 100; i++) {
     expect(cache.get(i)).toBe(i)
   }
-  t.end()
+  done()
 })
 
-test('reset', function (t) {
+test('reset', function (done) {
   var cache = new LRU(10)
   cache.set('a', 'A')
   cache.set('b', 'B')
@@ -90,14 +89,14 @@ test('reset', function (t) {
   expect(cache.max).toBe(10)
   expect(cache.get('a')).toBe(undefined)
   expect(cache.get('b')).toBe(undefined)
-  t.end()
+  done()
 })
 
-test('basic with weighed length', function (t) {
+test('basic with weighed length', function (done) {
   var cache = new LRU({
     max: 100,
     length: function (item, key) {
-      t.isa(key, 'string')
+      expect(typeof key).toBe('string')
       return item.size
     }
   })
@@ -107,10 +106,10 @@ test('basic with weighed length', function (t) {
   expect(cache.lengthCalculator(cache.get('key'), 'key')).toBe(50)
   expect(cache.length).toBe(50)
   expect(cache.max).toBe(100)
-  t.end()
+  done()
 })
 
-test('weighed length item too large', function (t) {
+test('weighed length item too large', function (done) {
   var cache = new LRU({
     max: 10,
     length: function (item) { return item.size }
@@ -122,10 +121,10 @@ test('weighed length item too large', function (t) {
 
   expect(cache.length).toBe(0)
   expect(cache.get('key')).toBe(undefined)
-  t.end()
+  done()
 })
 
-test('least recently set with weighed length', function (t) {
+test('least recently set with weighed length', function (done) {
   var cache = new LRU({
     max: 8,
     length: function (item) { return item.length }
@@ -138,10 +137,10 @@ test('least recently set with weighed length', function (t) {
   expect(cache.get('c')).toBe('CCC')
   expect(cache.get('b')).toBe(undefined)
   expect(cache.get('a')).toBe(undefined)
-  t.end()
+  done()
 })
 
-test('lru recently gotten with weighed length', function (t) {
+test('lru recently gotten with weighed length', function (done) {
   var cache = new LRU({
     max: 8,
     length: function (item) { return item.length }
@@ -156,10 +155,10 @@ test('lru recently gotten with weighed length', function (t) {
   expect(cache.get('d')).toBe('DDDD')
   expect(cache.get('b')).toBe('BB')
   expect(cache.get('a')).toBe('A')
-  t.end()
+  done()
 })
 
-test('lru recently updated with weighed length', function (t) {
+test('lru recently updated with weighed length', function (done) {
   var cache = new LRU({
     max: 8,
     length: function (item) { return item.length }
@@ -182,10 +181,10 @@ test('lru recently updated with weighed length', function (t) {
   expect(cache.length).toBe(4) // ++BB
   expect(cache.get('a')).toBe(undefined)
   expect(cache.get('b')).toBe('++BB')
-  t.end()
+  done()
 })
 
-test('set returns proper booleans', function (t) {
+test('set returns proper booleans', function (done) {
   var cache = new LRU({
     max: 5,
     length: function (item) { return item.length }
@@ -198,10 +197,10 @@ test('set returns proper booleans', function (t) {
 
   expect(cache.set('b', 'B')).toBe(true)
   expect(cache.set('c', 'CCCC')).toBe(true)
-  t.end()
+  done()
 })
 
-test('drop the old items', function (t) {
+test('drop the old items', function (done) {
   var n = process.env.CI ? 1000 : 100
   var cache = new LRU({
     max: 5,
@@ -228,11 +227,11 @@ test('drop the old items', function (t) {
 
   setTimeout(function () {
     expect(cache.get('c')).toBeFalsy()
-    t.end()
+    done()
   }, n * 6)
 })
 
-test('manual pruning', function (t) {
+test('manual pruning', function (done) {
   var cache = new LRU({
     max: 5,
     maxAge: 50
@@ -249,11 +248,11 @@ test('manual pruning', function (t) {
     expect(cache.get('b')).toBeFalsy()
     expect(cache.get('c')).toBeFalsy()
 
-    t.end()
+    done()
   }, 100)
 })
 
-test('individual item can have its own maxAge', function (t) {
+test('individual item can have its own maxAge', function (done) {
   var cache = new LRU({
     max: 5,
     maxAge: 50
@@ -262,11 +261,11 @@ test('individual item can have its own maxAge', function (t) {
   cache.set('a', 'A', 20)
   setTimeout(function () {
     expect(cache.get('a')).toBeFalsy()
-    t.end()
+    done()
   }, 25)
 })
 
-test('individual item can have its own maxAge > cache', function (t) {
+test('individual item can have its own maxAge > cache', function (done) {
   var cache = new LRU({
     max: 5,
     maxAge: 20
@@ -275,11 +274,11 @@ test('individual item can have its own maxAge > cache', function (t) {
   cache.set('a', 'A', 50)
   setTimeout(function () {
     expect(cache.get('a')).toBe('A')
-    t.end()
+    done()
   }, 25)
 })
 
-test('disposal function', function (t) {
+test('disposal function', function (done) {
   var disposed = false
   var cache = new LRU({
     max: 1,
@@ -297,10 +296,10 @@ test('disposal function', function (t) {
   expect(disposed).toBe(10)
   cache.reset()
   expect(disposed).toBe(3)
-  t.end()
+  done()
 })
 
-test('no dispose on set', function (t) {
+test('no dispose on set', function (done) {
   var disposed = false
   var cache = new LRU({
     max: 1,
@@ -313,10 +312,10 @@ test('no dispose on set', function (t) {
   cache.set(1, 1)
   cache.set(1, 10)
   expect(disposed).toBe(false)
-  t.end()
+  done()
 })
 
-test('disposal function on too big of item', function (t) {
+test('disposal function on too big of item', function (done) {
   var disposed = false
   var cache = new LRU({
     max: 1,
@@ -332,10 +331,10 @@ test('disposal function on too big of item', function (t) {
   expect(disposed).toBe(false)
   cache.set('obj', obj)
   expect(disposed).toBe(obj)
-  t.end()
+  done()
 })
 
-test('has()', function (t) {
+test('has()', function (done) {
   var cache = new LRU({
     max: 1,
     maxAge: 10
@@ -348,11 +347,11 @@ test('has()', function (t) {
   expect(cache.has('blu')).toBe(true)
   setTimeout(function () {
     expect(cache.has('blu')).toBe(false)
-    t.end()
+    done()
   }, 15)
 })
 
-test('stale', function (t) {
+test('stale', function (done) {
   var cache = new LRU({
     maxAge: 10,
     stale: true
@@ -371,11 +370,11 @@ test('stale', function (t) {
     expect(cache.has('foo')).toBe(false)
     expect(cache.get('foo')).toBe('bar')
     expect(cache.get('foo')).toBe(undefined)
-    t.end()
+    done()
   }, 15)
 })
 
-test('lru update via set', function (t) {
+test('lru update via set', function (done) {
   var cache = new LRU({ max: 2 })
 
   cache.set('foo', 1)
@@ -388,10 +387,10 @@ test('lru update via set', function (t) {
   expect(cache.get('bar')).toBe(undefined)
   expect(cache.get('baz')).toBe(3)
   expect(cache.get('qux')).toBe(4)
-  t.end()
+  done()
 })
 
-test('least recently set w/ peek', function (t) {
+test('least recently set w/ peek', function (done) {
   var cache = new LRU(2)
   cache.set('a', 'A')
   cache.set('b', 'B')
@@ -400,10 +399,10 @@ test('least recently set w/ peek', function (t) {
   expect(cache.get('c')).toBe('C')
   expect(cache.get('b')).toBe('B')
   expect(cache.get('a')).toBe(undefined)
-  t.end()
+  done()
 })
 
-test('pop the least used item', function (t) {
+test('pop the least used item', function (done) {
   var cache = new LRU(3)
   var last
 
@@ -440,10 +439,10 @@ test('pop the least used item', function (t) {
   expect(cache.length).toBe(0)
   expect(cache.max).toBe(3)
 
-  t.end()
+  done()
 })
 
-test('get and set only accepts strings and numbers as keys', function (t) {
+test('get and set only accepts strings and numbers as keys', function (done) {
   var cache = new LRU()
 
   cache.set('key', 'value')
@@ -452,10 +451,10 @@ test('get and set only accepts strings and numbers as keys', function (t) {
   expect(cache.get('key')).toBe('value')
   expect(cache.get(123)).toBe(456)
 
-  t.end()
+  done()
 })
 
-test('peek with wierd keys', function (t) {
+test('peek with wierd keys', function (done) {
   var cache = new LRU()
 
   cache.set('key', 'value')
@@ -468,18 +467,18 @@ test('peek with wierd keys', function (t) {
     toString: function () { return 'key' }
   })).toBe(undefined)
 
-  t.end()
+  done()
 })
 
-test('invalid length calc results in basic length', function (t) {
+test('invalid length calc results in basic length', function (done) {
   var l = new LRU({ length: true })
-  t.isa(l.lengthCalculator, 'function')
+  expect(typeof l.lengthCalculator).toBe('function')
   l.lengthCalculator = 'not a function'
-  t.isa(l.lengthCalculator, 'function')
-  t.end()
+  expect(typeof l.lengthCalculator).toBe('function')
+  done()
 })
 
-test('change length calculator recalculates', function (t) {
+test('change length calculator recalculates', function (done) {
   var l = new LRU({ max: 3 })
   l.set(2, 2)
   l.set(1, 1)
@@ -499,10 +498,10 @@ test('change length calculator recalculates', function (t) {
   l.lengthCalculator = { not: 'a function' }
   expect(l.lengthCalculator(1, 10)).toBe(1)
   expect(l.lengthCalculator(10, 1)).toBe(1)
-  t.end()
+  done()
 })
 
-test('delete non-existent item has no effect', function (t) {
+test('delete non-existent item has no effect', function (done) {
   var l = new LRU({ max: 2 })
   l.set('foo', 1)
   l.set('bar', 2)
@@ -510,10 +509,10 @@ test('delete non-existent item has no effect', function (t) {
   expect(l.dumpLru().toArray().map(function (hit) {
     return hit.key
   })).toEqual([ 'bar', 'foo' ])
-  t.end()
+  done()
 })
 
-test('maxAge on list, cleared in forEach', function (t) {
+test('maxAge on list, cleared in forEach', function (done) {
   var l = new LRU({ stale: true })
   l.set('foo', 1)
 
@@ -532,10 +531,10 @@ test('maxAge on list, cleared in forEach', function (t) {
   expect(saw).toBeTruthy()
   expect(l.length).toBe(0)
 
-  t.end()
+  done()
 })
 
-test('bad max/maxAge options', t => {
+test('bad max/maxAge options', done => {
   expect(() => new LRU({ maxAge: true })).toThrow()
   expect(() => { new LRU().maxAge = 'foo' }).toThrow()
   expect(() => new LRU({ max: true })).toThrow()
@@ -543,11 +542,11 @@ test('bad max/maxAge options', t => {
   const c = new LRU({
     max: 2
   })
-  t.throw(() => c.set('a', 'A', 'true'), 'maxAge must be a number')
-  t.end()
+  expect(() => c.set('a', 'A', 'true')).toThrow('maxAge must be a number')
+  done()
 })
 
-test('update age on get', t => {
+test('update age on get', done => {
   const l = new LRU({ updateAgeOnGet: true, maxAge: 10 })
   l.set('foo', 'bar')
   const e1 = l.dump()[0].e
@@ -561,5 +560,5 @@ test('update age on get', t => {
   const e3 = l.dump()[0].e
   expect(e1 < e2).toBeTruthy()
   expect(e2 < e3).toBeTruthy()
-  t.end()
+  done()
 })
