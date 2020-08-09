@@ -149,6 +149,7 @@ class LRUCache {
             forEachStep_1.forEachStep(this, fn, walker, thisp);
             walker = next;
         }
+        return this;
     }
     /**
      * Return an array of the keys in the cache.
@@ -175,6 +176,7 @@ class LRUCache {
         // A linked list to keep track of recently-used-ness
         this[symbol_1.LRU_LIST] = new yallist_1.default(); // list of items in order of use recency
         this[symbol_1.LENGTH] = 0; // length of items in the list
+        return this;
     }
     /**
      * Return an array of the cache entries ready for serialization and usage with `destinationCache.load(arr)`.
@@ -278,7 +280,9 @@ class LRUCache {
      * Deletes a key out of the cache.
      */
     del(key) {
-        del_1.del(this, this[symbol_1.CACHE].get(key));
+        let value = this[symbol_1.CACHE].get(key);
+        del_1.del(this, value);
+        return value;
     }
     /**
      * Loads another cache entries array, obtained with `sourceCache.dump()`,
@@ -307,12 +311,24 @@ class LRUCache {
                 }
             }
         }
+        return this;
     }
     /**
      * Manually iterates over the entire cache proactively pruning old entries.
      */
     prune() {
         this[symbol_1.CACHE].forEach((value, key) => get_1.get(this, key, false));
+        return this;
+    }
+    entries() {
+        return this[symbol_1.LRU_LIST].toArray().entries();
+    }
+    static create(options, arr) {
+        let lru = new this(options);
+        if (arr === null || arr === void 0 ? void 0 : arr.length) {
+            lru.load(arr);
+        }
+        return lru;
     }
 }
 exports.LRUCache = LRUCache;

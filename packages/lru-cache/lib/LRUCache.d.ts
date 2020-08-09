@@ -90,7 +90,7 @@ export declare class LRUCache<K, V> {
      * Just like `Array.prototype.forEach`. Iterates over all the keys in the cache,
      * in order of recent-ness. (Ie, more recently used items are iterated over first.)
      */
-    forEach(fn: IFn<K, V>, thisp?: LRUCache<K, V>): void;
+    forEach(fn: IFn<K, V>, thisp?: LRUCache<K, V>): this;
     /**
      * Return an array of the keys in the cache.
      */
@@ -102,7 +102,7 @@ export declare class LRUCache<K, V> {
     /**
      * Clear the cache entirely, throwing away all values.
      */
-    reset(): void;
+    reset(): this;
     /**
      * Return an array of the cache entries ready for serialization and usage with `destinationCache.load(arr)`.
      */
@@ -137,16 +137,18 @@ export declare class LRUCache<K, V> {
     /**
      * Deletes a key out of the cache.
      */
-    del(key: K): void;
+    del(key: K): Yallist.Node<Entry<K, V>>;
     /**
      * Loads another cache entries array, obtained with `sourceCache.dump()`,
      * into the cache. The destination cache is reset before loading new entries
      *
      * @param cacheEntries Obtained from `sourceCache.dump()`
      */
-    load(arr: ILruEntry<K, V>[]): void;
+    load(arr: ILruEntry<K, V>[]): this;
     /**
      * Manually iterates over the entire cache proactively pruning old entries.
      */
-    prune(): void;
+    prune(): this;
+    entries(): IterableIterator<[number, Entry<K, V>]>;
+    static create<K, V>(options?: IOptions<K, V> | number, arr?: ILruEntry<K, V>[]): LRUCache<K, V>;
 }

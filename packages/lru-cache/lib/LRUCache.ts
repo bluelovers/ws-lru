@@ -222,6 +222,8 @@ export class LRUCache<K, V>
 			forEachStep(this, fn, walker, thisp)
 			walker = next
 		}
+
+		return this
 	}
 
 	/**
@@ -256,6 +258,8 @@ export class LRUCache<K, V>
 		// A linked list to keep track of recently-used-ness
 		this[LRU_LIST] = new Yallist() // list of items in order of use recency
 		this[LENGTH] = 0 // length of items in the list
+
+		return this
 	}
 
 	/**
@@ -394,7 +398,9 @@ export class LRUCache<K, V>
 	 */
 	del(key: K)
 	{
-		del(this, this[CACHE].get(key))
+		let value = this[CACHE].get(key);
+		del(this, value)
+		return value
 	}
 
 	/**
@@ -429,6 +435,8 @@ export class LRUCache<K, V>
 				}
 			}
 		}
+
+		return this
 	}
 
 	/**
@@ -437,5 +445,25 @@ export class LRUCache<K, V>
 	prune()
 	{
 		this[CACHE].forEach((value, key) => get(this, key, false))
+
+		return this
 	}
+
+	entries()
+	{
+		return this[LRU_LIST].toArray().entries()
+	}
+
+	static create<K, V>(options?: IOptions<K, V> | number, arr?: ILruEntry<K, V>[])
+	{
+		let lru = new this(options);
+
+		if (arr?.length)
+		{
+			lru.load(arr)
+		}
+
+		return lru
+	}
+
 }
