@@ -4,7 +4,7 @@ const path = require("path");
 const { test } = require("tap");
 const requireInject = require("require-inject");
 
-const Cache = require(".");
+const Cache = require("../index");
 
 test("no cacheName provided", t => {
 	t.throws(

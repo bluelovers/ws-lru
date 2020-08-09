@@ -2,47 +2,44 @@
   "name": "lru-cache-fs",
   "version": "2.0.1",
   "description": "Extends lru-cache to add file system support",
-  "main": "index.js",
-  "scripts": {
-    "test": "tap",
-    "snap": "tap",
-    "preversion": "npm test"
-  },
-  "files": [
-    "index.js"
-  ],
-  "engine": {
-    "node": ">=10"
-  },
-  "author": {
-    "name": "Ruy Adorno",
-    "twitter": "ruyadorno",
-    "url": "http://ruyadorno.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ruyadorno/lru-cache-fs.git"
-  },
-  "bugs": "https://github.com/ruyadorno/lru-cache-fs/issues",
-  "license": "MIT",
   "keywords": [
     "cache",
     "lru-cache",
     "env-paths",
     "fs"
   ],
-  "tap": {
-    "100": true
+  "homepage": "https://github.com/bluelovers/ws-lru/tree/master/packages/lru-cache-fs#readme",
+  "bugs": {
+    "url": "https://github.com/bluelovers/ws-lru/issues"
   },
-  "devDependencies": {
-    "eslint": "^6.6.0",
-    "eslint-config-prettier": "^6.7.0",
-    "prettier": "^1.19.1",
-    "require-inject": "^1.4.4",
-    "tap": "^14.9.2"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluelovers/ws-lru.git"
+  },
+  "license": "MIT",
+  "author": "Ruy Adorno (http://ruyadorno.com)",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest",
+    "preversion": "yarn test",
+    "prepublishOnly_": "echo prepublishOnly",
+    "prepublishOnly:check-bin": "ynpx --quiet @yarn-tool/check-pkg-bin",
+    "prepublishOnly:update": "yarn run ncu && yarn run sort-package-json",
+    "ncu": "yarn-tool ncu -u",
+    "sort-package-json": "yarn-tool sort"
   },
   "dependencies": {
     "env-paths": "^2.2.0",
-    "lru-cache": "^5.1.1"
+    "lru-cache2": "^6.0.0"
+  },
+  "devDependencies": {},
+  "engine": {
+    "node": ">=10"
+  },
+  "tap": {
+    "100": true
   }
 }
