@@ -1,7 +1,6 @@
-var test = require('tap').test
 var LRU = require('../')
 
-test('forEach', function (t) {
+test('forEach', function (done) {
   var l = new LRU(5)
   var i
   for (i = 0; i < 10; i++) {
@@ -10,9 +9,9 @@ test('forEach', function (t) {
 
   i = 9
   l.forEach(function (val, key, cache) {
-    t.equal(cache, l)
-    t.equal(key, i)
-    t.equal(val, i.toString(2))
+    expect(cache).toBe(l)
+    expect(key).toBe(i)
+    expect(val).toBe(i.toString(2))
     i -= 1
   })
 
@@ -25,26 +24,26 @@ test('forEach', function (t) {
 
   l.forEach(function (val, key, cache) {
     var j = order[i++]
-    t.equal(cache, l)
-    t.equal(key, j)
-    t.equal(val, j.toString(2))
+    expect(cache).toBe(l)
+    expect(key).toBe(j)
+    expect(val).toBe(j.toString(2))
   })
-  t.equal(i, order.length)
+  expect(i).toBe(order.length)
 
   i = 0
   order.reverse()
   l.rforEach(function (val, key, cache) {
     var j = order[i++]
-    t.equal(cache, l)
-    t.equal(key, j)
-    t.equal(val, j.toString(2))
+    expect(cache).toBe(l)
+    expect(key).toBe(j)
+    expect(val).toBe(j.toString(2))
   })
-  t.equal(i, order.length)
+  expect(i).toBe(order.length)
 
-  t.end()
+  done()
 })
 
-test('keys() and values()', function (t) {
+test('keys() and values()', function (done) {
   var l = new LRU(5)
   var i
   for (i = 0; i < 10; i++) {
@@ -61,10 +60,10 @@ test('keys() and values()', function (t) {
   t.similar(l.keys(), [8, 6, 9, 7, 5])
   t.similar(l.values(), ['1000', '110', '1001', '111', '101'])
 
-  t.end()
+  done()
 })
 
-test('all entries are iterated over', function (t) {
+test('all entries are iterated over', function (done) {
   var l = new LRU(5)
   var i
   for (i = 0; i < 10; i++) {
@@ -79,13 +78,13 @@ test('all entries are iterated over', function (t) {
     i += 1
   })
 
-  t.equal(i, 5)
-  t.equal(l.keys().length, 1)
+  expect(i).toBe(5)
+  expect(l.keys().length).toBe(1)
 
-  t.end()
+  done()
 })
 
-test('all stale entries are removed', function (t) {
+test('all stale entries are removed', function (done) {
   var l = new LRU({ max: 5, maxAge: -5, stale: true })
   var i
   for (i = 0; i < 10; i++) {
@@ -97,13 +96,13 @@ test('all stale entries are removed', function (t) {
     i += 1
   })
 
-  t.equal(i, 5)
-  t.equal(l.keys().length, 0)
+  expect(i).toBe(5)
+  expect(l.keys().length).toBe(0)
 
-  t.end()
+  done()
 })
 
-test('expires', function (t) {
+test('expires', function (done) {
   var l = new LRU({
     max: 10,
     maxAge: 50
@@ -118,17 +117,17 @@ test('expires', function (t) {
   setTimeout(function () {
     l.forEach(function (val, key, cache) {
       var j = order[i++]
-      t.equal(cache, l)
-      t.equal(key, j.toString())
-      t.equal(val, j.toString(2))
+      expect(cache).toBe(l)
+      expect(key).toBe(j.toString())
+      expect(val).toBe(j.toString(2))
     })
-    t.equal(i, order.length)
+    expect(i).toBe(order.length)
 
     setTimeout(function () {
       var count = 0
       l.forEach(function (val, key, cache) { count++ })
-      t.equal(0, count)
-      t.end()
+      expect(0).toBe(count)
+      done()
     }, 25)
   }, 26)
 })

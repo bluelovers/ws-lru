@@ -1,21 +1,20 @@
-var test = require('tap').test
 var LRU = require('../')
 var Yallist = require('yallist')
 
-test('dump', function (t) {
+test('dump', function (done) {
   var cache = new LRU()
 
-  t.equal(cache.dump().length, 0, 'nothing in dump for empty cache')
+  expect(cache.dump().length).toBe(0)
 
   cache.set('a', 'A')
   cache.set('b', 'B')
-  t.deepEqual(cache.dump(), [
+  expect(cache.dump()).toEqual([
     { k: 'b', v: 'B', e: 0 },
     { k: 'a', v: 'A', e: 0 }
   ])
 
   cache.set(123, 456)
-  t.deepEqual(cache.dump(), [
+  expect(cache.dump()).toEqual([
     { k: 123, v: 456, e: 0 },
     { k: 'b', v: 'B', e: 0 },
     { k: 'a', v: 'A', e: 0 }
@@ -23,26 +22,26 @@ test('dump', function (t) {
   cache.del(123)
 
   cache.set('a', 'A')
-  t.deepEqual(cache.dump(), [
+  expect(cache.dump()).toEqual([
     { k: 'a', v: 'A', e: 0 },
     { k: 'b', v: 'B', e: 0 }
   ])
 
   cache.get('b')
-  t.deepEqual(cache.dump(), [
+  expect(cache.dump()).toEqual([
     { k: 'b', v: 'B', e: 0 },
     { k: 'a', v: 'A', e: 0 }
   ])
 
   cache.del('a')
-  t.deepEqual(cache.dump(), [
+  expect(cache.dump()).toEqual([
     { k: 'b', v: 'B', e: 0 }
   ])
 
-  t.end()
+  done()
 })
 
-test('do not dump stale items', function (t) {
+test('do not dump stale items', function (done) {
   var n = process.env.CI ? 1000 : 50
   var cache = new LRU({
     max: 5,
@@ -57,9 +56,9 @@ test('do not dump stale items', function (t) {
     // expires at 75
     cache.set('b', 'B')
     var s = cache.dump()
-    t.equal(s.length, 2)
-    t.equal(s[0].k, 'b')
-    t.equal(s[1].k, 'a')
+    expect(s.length).toBe(2)
+    expect(s[0].k).toBe('b')
+    expect(s[1].k).toBe('a')
     setTimeout(step2, n)
   }
 
@@ -67,9 +66,9 @@ test('do not dump stale items', function (t) {
     // expires at 110
     cache.set('c', 'C')
     var s = cache.dump()
-    t.equal(s.length, 2)
-    t.equal(s[0].k, 'c')
-    t.equal(s[1].k, 'b')
+    expect(s.length).toBe(2)
+    expect(s[0].k).toBe('c')
+    expect(s[1].k).toBe('b')
     setTimeout(step3, n)
   }
 
@@ -77,27 +76,27 @@ test('do not dump stale items', function (t) {
     // expires at 130
     cache.set('d', 'D', n * 3)
     var s = cache.dump()
-    t.equal(s.length, 2)
-    t.equal(s[0].k, 'd')
-    t.equal(s[1].k, 'c')
+    expect(s.length).toBe(2)
+    expect(s[0].k).toBe('d')
+    expect(s[1].k).toBe('c')
     setTimeout(step4, n * 2)
   }
 
   function step4 () {
     var s = cache.dump()
-    t.equal(s.length, 1)
-    t.equal(s[0].k, 'd')
+    expect(s.length).toBe(1)
+    expect(s[0].k).toBe('d')
     setTimeout(step5, n)
   }
 
   function step5 () {
     var s = cache.dump()
-    t.deepEqual(s, [])
-    t.end()
+    expect(s).toEqual([])
+    done()
   }
 })
 
-test('load basic cache', function (t) {
+test('load basic cache', function (done) {
   var cache = new LRU()
   var copy = new LRU()
 
@@ -106,12 +105,12 @@ test('load basic cache', function (t) {
   cache.set(123, 456)
 
   copy.load(cache.dump())
-  t.deepEquals(cache.dump(), copy.dump())
+  expect(cache.dump()).toEqual(copy.dump())
 
-  t.end()
+  done()
 })
 
-test('load staled cache', function (t) {
+test('load staled cache', function (done) {
   var cache = new LRU({ maxAge: 100 })
   var copy = new LRU({ maxAge: 100 })
   var arr
@@ -122,22 +121,22 @@ test('load staled cache', function (t) {
     // expires at 80
     cache.set('b', 'B')
     arr = cache.dump()
-    t.equal(arr.length, 2)
+    expect(arr.length).toBe(2)
   }, 50)
 
   setTimeout(function () {
     copy.load(arr)
-    t.equal(copy.get('a'), undefined)
-    t.equal(copy.get('b'), 'B')
+    expect(copy.get('a')).toBe(undefined)
+    expect(copy.get('b')).toBe('B')
   }, 120)
 
   setTimeout(function () {
-    t.equal(copy.get('b'), undefined)
-    t.end()
+    expect(copy.get('b')).toBe(undefined)
+    done()
   }, 180)
 })
 
-test('load to other size cache', function (t) {
+test('load to other size cache', function () {
   var cache = new LRU({ max: 2 })
   var copy = new LRU({ max: 1 })
 
@@ -145,16 +144,14 @@ test('load to other size cache', function (t) {
   cache.set('b', 'B')
 
   copy.load(cache.dump())
-  t.equal(copy.get('a'), undefined)
-  t.equal(copy.get('b'), 'B')
+  expect(copy.get('a')).toBe(undefined)
+  expect(copy.get('b')).toBe('B')
 
   // update the last read from original cache
   cache.get('a')
   copy.load(cache.dump())
-  t.equal(copy.get('a'), 'A')
-  t.equal(copy.get('b'), undefined)
-
-  t.end()
+  expect(copy.get('a')).toBe('A')
+  expect(copy.get('b')).toBe(undefined)
 })
 
 test('load to other age cache', function (t) {
@@ -173,61 +170,59 @@ test('load to other age cache', function (t) {
     // b would be valid till 100 + 350
     cache.set('c', 'C', 350)
     arr = cache.dump()
-    t.equal(arr.length, 3)
+    expect(arr.length).toBe(3)
   }, 100)
 
   setTimeout(function () {
-    t.equal(cache.get('a'), undefined)
-    t.equal(cache.get('b'), 'B')
-    t.equal(cache.get('c'), 'C')
+    expect(cache.get('a')).toBe(undefined)
+    expect(cache.get('b')).toBe('B')
+    expect(cache.get('c')).toBe('C')
 
     aged.load(arr)
-    t.equal(aged.get('a'), undefined)
-    t.equal(aged.get('b'), 'B')
-    t.equal(aged.get('c'), 'C')
+    expect(aged.get('a')).toBe(undefined)
+    expect(aged.get('b')).toBe('B')
+    expect(aged.get('c')).toBe('C')
 
     simple.load(arr)
-    t.equal(simple.get('a'), undefined)
-    t.equal(simple.get('b'), 'B')
-    t.equal(simple.get('c'), 'C')
+    expect(simple.get('a')).toBe(undefined)
+    expect(simple.get('b')).toBe('B')
+    expect(simple.get('c')).toBe('C')
   }, 300)
 
   setTimeout(function () {
-    t.equal(cache.get('a'), undefined)
-    t.equal(cache.get('b'), undefined)
-    t.equal(cache.get('c'), 'C')
+    expect(cache.get('a')).toBe(undefined)
+    expect(cache.get('b')).toBe(undefined)
+    expect(cache.get('c')).toBe('C')
 
     aged.load(arr)
-    t.equal(aged.get('a'), undefined)
-    t.equal(aged.get('b'), undefined)
-    t.equal(aged.get('c'), 'C')
+    expect(aged.get('a')).toBe(undefined)
+    expect(aged.get('b')).toBe(undefined)
+    expect(aged.get('c')).toBe('C')
 
     simple.load(arr)
-    t.equal(simple.get('a'), undefined)
-    t.equal(simple.get('b'), undefined)
-    t.equal(simple.get('c'), 'C')
+    expect(simple.get('a')).toBe(undefined)
+    expect(simple.get('b')).toBe(undefined)
+    expect(simple.get('c')).toBe('C')
   }, 400)
 
   setTimeout(function () {
-    t.equal(cache.get('a'), undefined)
-    t.equal(cache.get('b'), undefined)
-    t.equal(cache.get('c'), undefined)
+    expect(cache.get('a')).toBe(undefined)
+    expect(cache.get('b')).toBe(undefined)
+    expect(cache.get('c')).toBe(undefined)
 
     aged.load(arr)
-    t.equal(aged.get('a'), undefined)
-    t.equal(aged.get('b'), undefined)
-    t.equal(aged.get('c'), undefined)
+    expect(aged.get('a')).toBe(undefined)
+    expect(aged.get('b')).toBe(undefined)
+    expect(aged.get('c')).toBe(undefined)
 
     simple.load(arr)
-    t.equal(simple.get('a'), undefined)
-    t.equal(simple.get('b'), undefined)
-    t.equal(simple.get('c'), undefined)
-    t.end()
+    expect(simple.get('a')).toBe(undefined)
+    expect(simple.get('b')).toBe(undefined)
+    expect(simple.get('c')).toBe(undefined)
   }, 500)
 })
 
-test('dumpLru', function (t) {
+test('dumpLru', function () {
   var l = new LRU()
-  t.isa(l.dumpLru(), Yallist)
-  t.end()
+  expect(l.dumpLru()).toBe(Yallist)
 })
