@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@types/yallist": "*",
-    "yallist": "^4.0.0"
+    "yallist": "^4"
   },
   "engines": {
     "node": ">=10"
