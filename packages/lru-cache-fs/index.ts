@@ -1,43 +1,66 @@
-"use strict";
+import { readFileSync, writeJSONSync, outputJSONSync } from 'fs-extra';
+import LRUCache from 'lru-cache2';
+import { IOptions, ILruEntry } from 'lru-cache2/lib';
+import { loadCacheFile } from './lib/loadCacheFile';
+import { cacheFilePath } from './lib/cacheFilePath';
 
-const path = require("path");
-const { readFileSync, writeFileSync } = require("fs");
-const LRUCache = require("lru-cache");
-const envPaths = require("env-paths");
+const FILENAME = Symbol.for("filename");
+const AUTO_CREATE_FILE_PATH = Symbol.for("AUTO_CREATE_FILE_PATH");
 
-const FILENAME = Symbol("filename");
+export interface IOptionsLRUCacheFS<K, V> extends IOptions<K, V>
+{
+	cacheName: string;
+	cwd?: string;
+	autoCreate?: boolean;
+}
 
-class LRUCacheFS extends LRUCache {
-	constructor(options) {
+export class LRUCacheFS<K, V> extends LRUCache<K, V>
+{
+	protected [FILENAME]: string;
+	protected [AUTO_CREATE_FILE_PATH]: boolean;
+
+	constructor(options: IOptionsLRUCacheFS<K, V>)
+	{
 		super(options);
 
-		if (!options.cacheName) {
-			const err = new TypeError("cacheName is required");
-			err.code = "ECACHENAME";
-			throw err;
-		}
+		this[FILENAME] = cacheFilePath(options);
+		this[AUTO_CREATE_FILE_PATH] = !!options.autoCreate;
 
-		this[FILENAME] =
-			(options.cwd && path.join(options.cwd, options.cacheName)) ||
-			envPaths(options.cacheName, { suffix: "nodejs" }).cache;
-
-		const loadCacheFile = () => {
-			try {
-				const file = readFileSync(this[FILENAME], 'utf8')
-				return JSON.parse(file.toString());
-			} catch (e) {
-				return [];
-			}
-		};
-
-		this.load(loadCacheFile());
+		this.load(loadCacheFile<K, V>(this[FILENAME]));
 
 		return this;
 	}
 
-	fsDump() {
-		writeFileSync(this[FILENAME], JSON.stringify(this.dump(), null, 2));
+	fsDump(autoCreate?: boolean)
+	{
+		const fn = (autoCreate ?? (this[AUTO_CREATE_FILE_PATH] === true)) ? outputJSONSync : writeJSONSync;
+
+		fn(this[FILENAME], this.dump(), {
+			spaces: 2
+		});
+
+		return this
 	}
+
+	static fromFile<K, V>(filename: string, options?: Partial<IOptionsLRUCacheFS<K, V>>)
+	{
+		options = {
+			...options,
+			cacheName: filename,
+		} as IOptionsLRUCacheFS<K, V>;
+
+		options.cwd ??= process.cwd();
+
+		let cache = new this(options as any);
+
+		return cache;
+	}
+
+	static create<K, V>(options: IOptionsLRUCacheFS<K, V>)
+	{
+		return new this(options);
+	}
+
 }
 
-module.exports = LRUCacheFS;
+export default LRUCacheFS;

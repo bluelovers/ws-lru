@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cache file missing 1`] = `Array []`;
+
+exports[`no cacheName provided 1`] = `"cacheName is required"`;
+
+exports[`set more than max 1`] = `
+Array [
+  Object {
+    "e": 0,
+    "k": "third-item",
+    "v": Object {
+      "foo": "bar",
+    },
+  },
+  Object {
+    "e": 0,
+    "k": "second-item",
+    "v": Array [
+      "foo",
+      "echo",
+    ],
+  },
+]
+`;
+
+exports[`set to existing cache 1`] = `
+Array [
+  Object {
+    "e": 0,
+    "k": "third-item",
+    "v": Object {
+      "foo": "bar",
+    },
+  },
+  Object {
+    "e": 0,
+    "k": "second-item",
+    "v": Array [
+      "foo",
+      "echo",
+    ],
+  },
+  Object {
+    "e": 0,
+    "k": "first-item",
+    "v": Array [
+      "foo",
+      "bar",
+    ],
+  },
+]
+`;
+
+exports[`write cache to fs on fsDump 1`] = `
+Array [
+  Object {
+    "e": 0,
+    "k": "third-item",
+    "v": Object {
+      "foo": "bar",
+    },
+  },
+  Object {
+    "e": 0,
+    "k": "second-item",
+    "v": Array [
+      "foo",
+      "echo",
+    ],
+  },
+  Object {
+    "e": 0,
+    "k": "first-item",
+    "v": Array [
+      "foo",
+      "bar",
+    ],
+  },
+]
+`;

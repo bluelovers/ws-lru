@@ -86,6 +86,8 @@ export class LRUCache<K, V>
 		this[NO_DISPOSE_ON_SET] = options.noDisposeOnSet || false
 		this[UPDATE_AGE_ON_GET] = options.updateAgeOnGet || false
 		this.reset()
+
+		return this;
 	}
 
 	/**
