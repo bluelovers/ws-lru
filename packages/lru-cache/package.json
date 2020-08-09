@@ -7,32 +7,31 @@
     "lru",
     "cache"
   ],
-  "homepage": "https://github.com/isaacs/node-lru-cache#readme",
+  "homepage": "https://github.com/bluelovers/ws-lru/tree/master/packages/lru-cache#readme",
   "bugs": {
-    "url": "https://github.com/isaacs/node-lru-cache/issues"
+    "url": "https://github.com/bluelovers/ws-lru/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/isaacs/node-lru-cache.git"
+    "url": "git+https://github.com/bluelovers/ws-lru.git"
   },
   "license": "ISC",
   "author": "Isaac Z. Schlueter <i@izs.me>",
   "main": "index.js",
   "directories": {
+    "lib": "lib",
     "test": "test"
   },
-  "files": [
-    "index.js"
-  ],
   "scripts": {
     "test": "jest",
     "npm:publish": "npm publish",
     "npm:publish:lerna": "lerna publish --yes --bump patch",
-    "preversion": "npm test",
-    "prepublishOnly": "yarn run prepublishOnly:update && yarn run test",
+    "preversion": "yarn test",
+    "prepublishOnly": "echo prepublishOnly",
+    "prepublishOnly_": "yarn run test",
     "prepublishOnly:check-bin": "ynpx --quiet @yarn-tool/check-pkg-bin",
     "prepublishOnly:update": "yarn run ncu && yarn run sort-package-json",
-    "postpublish": "yarn run postpublish:changelog && yarn run postpublish:git:commit && yarn run postpublish:git:tag && yarn run postpublish:git:push",
+    "postpublish_": "yarn run postpublish:changelog && yarn run postpublish:git:commit && yarn run postpublish:git:tag && yarn run postpublish:git:push",
     "postpublish:changelog": "ynpx --quiet @yarn-tool/changelog && git add ./CHANGELOG.md",
     "postpublish:git:commit": "git commit -m \"chore(release): publish\" . & echo postpublish:git:commit",
     "postpublish:git:push": "git push --follow-tags",
@@ -45,17 +44,7 @@
     "@types/yallist": "*",
     "yallist": "^4.0.0"
   },
-  "devDependencies": {
-    "@bluelovers/tsconfig": "^1.0.20",
-    "@types/benchmark": "^1.0.33",
-    "@types/jest": "^26.0.9",
-    "@types/lru-cache": "^5.1.0",
-    "@types/node": "^14.0.27",
-    "@types/yallist": "^3.0.1",
-    "benchmark": "^2.1.4",
-    "jest": "^26.2.2",
-    "ts-jest": "^26.1.4"
-  },
+  "devDependencies": {},
   "engines": {
     "node": ">=10"
   }
