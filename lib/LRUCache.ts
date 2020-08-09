@@ -32,6 +32,9 @@ import { IOptions, INode, IFn, ILruEntry } from './types';
  */
 export class LRUCache<K, V>
 {
+	/**
+	 * Kind of weird to have a default max of Infinity, but oh well.
+	 */
 	[MAX]: number;
 	[LENGTH_CALCULATOR]: (value: V, key?: K) => number;
 	[ALLOW_STALE]: boolean;
@@ -39,8 +42,17 @@ export class LRUCache<K, V>
 	[DISPOSE]: (key: K, value: V) => void;
 	[NO_DISPOSE_ON_SET]: boolean;
 	[UPDATE_AGE_ON_GET]: boolean;
+	/**
+	 * length of items in the list
+	 */
 	[LENGTH]: number;
+	/**
+	 * list of items in order of use recency
+	 */
 	[LRU_LIST]: Yallist<Entry<K, V>>;
+	/**
+	 * hash of items by key
+	 */
 	[CACHE]: Map<K, INode<K, V>>
 
 	constructor(options?: IOptions<K, V> | number)

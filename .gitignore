@@ -133,3 +133,5 @@ jest.config.js.map
 !npm-shrinkwrap.json
 *.stat
 .vercel
+/benchmark/index.d.ts
+/benchmark/index.js
