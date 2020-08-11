@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.5](https://github.com/bluelovers/ws-lru/compare/lru-cache2@6.0.4...lru-cache2@6.0.5) (2020-08-11)
+
+
+### 🐛　Bug Fixes
+
+* bug of maxAge ([eae09ff](https://github.com/bluelovers/ws-lru/commit/eae09ff1a45b9a8389a788d712b6cef4ddffee7c))
+* add _load_add for avoid update timestamp when load ([fb4e4cf](https://github.com/bluelovers/ws-lru/commit/fb4e4cf87373c46e4dcbebc92b84f7233ba90161))
+
+
+
+
+
 ## [6.0.4](https://github.com/bluelovers/ws-lru/compare/lru-cache2@6.0.3...lru-cache2@6.0.4) (2020-08-09)
 
 
