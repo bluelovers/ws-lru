@@ -113,6 +113,7 @@ export declare class LRUCache<K, V> {
      * `maxAge` is optional and overrides the cache `maxAge` option if provided.
      */
     set(key: K, value: V, maxAge?: number): boolean;
+    protected _load_add(raw: ILruEntry<K, V>, maxAge?: number): boolean;
     /**
      * Check if a key is in the cache, without updating the recent-ness
      * or deleting it for being stale.

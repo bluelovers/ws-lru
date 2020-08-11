@@ -248,6 +248,20 @@ class LRUCache {
         trim_1.trim(this);
         return true;
     }
+    _load_add(raw, maxAge) {
+        let { k: key, v: value, e: now } = raw;
+        const len = this[symbol_1.LENGTH_CALCULATOR](value, key);
+        let hit = new Entry_1.Entry(key, value, len, now, maxAge);
+        if (hit.length > this[symbol_1.MAX]) {
+            if (this[symbol_1.DISPOSE]) {
+                this[symbol_1.DISPOSE](key, value);
+            }
+            return false;
+        }
+        this[symbol_1.LENGTH] += hit.length;
+        this[symbol_1.LRU_LIST].unshift(hit);
+        this[symbol_1.CACHE].set(key, this[symbol_1.LRU_LIST].head);
+    }
     /**
      * Check if a key is in the cache, without updating the recent-ness
      * or deleting it for being stale.
@@ -310,16 +324,19 @@ class LRUCache {
             if (expiresAt === 0) 
             // the item was created without expiration in a non aged cache
             {
-                this.set(hit.k, hit.v);
+                //this.set(hit.k, hit.v)
+                this._load_add(hit);
             }
             else {
                 const maxAge = expiresAt - now;
                 // dont add already expired items
                 if (maxAge > 0) {
-                    this.set(hit.k, hit.v, maxAge);
+                    //this.set(hit.k, hit.v, maxAge)
+                    this._load_add(hit, maxAge);
                 }
             }
         }
+        trim_1.trim(this);
         return this;
     }
     /**

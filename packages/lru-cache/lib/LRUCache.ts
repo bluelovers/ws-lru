@@ -357,6 +357,28 @@ export class LRUCache<K, V>
 		return true
 	}
 
+	protected _load_add(raw: ILruEntry<K, V>, maxAge?: number)
+	{
+		let { k: key, v: value, e : now } = raw;
+
+		const len = this[LENGTH_CALCULATOR](value, key)
+		let hit = new Entry(key, value, len, now, maxAge)
+
+		if (hit.length > this[MAX])
+		{
+			if (this[DISPOSE])
+			{
+				this[DISPOSE](key, value)
+			}
+
+			return false
+		}
+
+		this[LENGTH] += hit.length
+		this[LRU_LIST].unshift(hit)
+		this[CACHE].set(key, this[LRU_LIST].head)
+	}
+
 	/**
 	 * Check if a key is in the cache, without updating the recent-ness
 	 * or deleting it for being stale.
@@ -433,7 +455,8 @@ export class LRUCache<K, V>
 			if (expiresAt === 0)
 				// the item was created without expiration in a non aged cache
 			{
-				this.set(hit.k, hit.v)
+				//this.set(hit.k, hit.v)
+				this._load_add(hit)
 			}
 			else
 			{
@@ -441,10 +464,13 @@ export class LRUCache<K, V>
 				// dont add already expired items
 				if (maxAge > 0)
 				{
-					this.set(hit.k, hit.v, maxAge)
+					//this.set(hit.k, hit.v, maxAge)
+					this._load_add(hit, maxAge)
 				}
 			}
 		}
+
+		trim(this)
 
 		return this
 	}
