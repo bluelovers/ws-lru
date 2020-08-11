@@ -148,7 +148,7 @@ test('load staled cache', function (done)
 	{
 		expect(copy.get('b')).toBe(undefined)
 		done()
-	}, 180)
+	}, 200)
 })
 
 test('load to other size cache', function ()

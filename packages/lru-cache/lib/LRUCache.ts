@@ -359,6 +359,8 @@ export class LRUCache<K, V>
 
 	protected _load_add(raw: ILruEntry<K, V>, maxAge?: number)
 	{
+		maxAge ||= this[MAX_AGE]
+
 		let { k: key, v: value, e : now } = raw;
 
 		const len = this[LENGTH_CALCULATOR](value, key)

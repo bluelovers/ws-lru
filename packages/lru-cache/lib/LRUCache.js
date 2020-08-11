@@ -249,6 +249,7 @@ class LRUCache {
         return true;
     }
     _load_add(raw, maxAge) {
+        maxAge || (maxAge = this[symbol_1.MAX_AGE]);
         let { k: key, v: value, e: now } = raw;
         const len = this[symbol_1.LENGTH_CALCULATOR](value, key);
         let hit = new Entry_1.Entry(key, value, len, now, maxAge);
