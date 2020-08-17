@@ -1,6 +1,6 @@
 {
   "name": "least-recently-record",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Least Recently Map/Set, make every add/set will at end of entries",
   "keywords": [
     "set",
@@ -33,8 +33,5 @@
     "prepublishOnly:update": "yarn run ncu && yarn run sort-package-json",
     "ncu": "yarn-tool ncu -u",
     "sort-package-json": "yarn-tool sort"
-  },
-  "dependencies": {},
-  "devDependencies": {},
-  "peerDependencies": {}
+  }
 }
