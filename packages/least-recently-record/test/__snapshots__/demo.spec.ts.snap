@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LeastRecentlyMap 1`] = `
+Map {
+  1 => 1,
+  2 => 2,
+}
+`;
+
+exports[`LeastRecentlySet 1`] = `
+Set {
+  1,
+  2,
+}
+`;

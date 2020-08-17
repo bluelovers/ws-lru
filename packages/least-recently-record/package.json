@@ -1,0 +1,40 @@
+{
+  "name": "least-recently-record",
+  "version": "1.0.0",
+  "description": "Least Recently Map/Set, make every add/set will at end of entries",
+  "keywords": [
+    "set",
+    "map",
+    "record",
+    "entries",
+    "mru",
+    "lru",
+    "cache"
+  ],
+  "homepage": "https://github.com/bluelovers/ws-lru/tree/master/packages/least-recently-record#readme",
+  "bugs": {
+    "url": "https://github.com/bluelovers/ws-lru/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluelovers/ws-lru.git"
+  },
+  "license": "ISC",
+  "author": "bluelovers",
+  "main": "index.js",
+  "scripts": {
+    "lint": "ynpx --quiet eslint -- **/*.ts",
+    "test": "jest",
+    "test:jest": "ynpx --quiet jest -- --coverage",
+    "test:mocha": "ynpx --quiet -p ts-node -p mocha mocha -- --require ts-node/register \"!(node_modules)/**/*.{test,spec}.{ts,tsx}\"",
+    "preversion": "yarn run test",
+    "prepublishOnly": "echo prepublishOnly",
+    "prepublishOnly:check-bin": "ynpx --quiet @yarn-tool/check-pkg-bin",
+    "prepublishOnly:update": "yarn run ncu && yarn run sort-package-json",
+    "ncu": "yarn-tool ncu -u",
+    "sort-package-json": "yarn-tool sort"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {}
+}
