@@ -76,6 +76,7 @@ export declare class LRUCache<K, V> {
      * Return total length of objects in cache taking into account `length` options function.
      */
     get length(): number;
+    get size(): number;
     /**
      * Return total quantity of objects currently in cache. Note,
      * that `stale` (see options) items are returned as part of this item count.
@@ -103,6 +104,7 @@ export declare class LRUCache<K, V> {
      * Clear the cache entirely, throwing away all values.
      */
     reset(): this;
+    clear(): this;
     /**
      * Return an array of the cache entries ready for serialization and usage with `destinationCache.load(arr)`.
      */
@@ -139,6 +141,7 @@ export declare class LRUCache<K, V> {
      * Deletes a key out of the cache.
      */
     del(key: K): Yallist.Node<Entry<K, V>>;
+    delete(key: K): Yallist.Node<Entry<K, V>>;
     /**
      * Loads another cache entries array, obtained with `sourceCache.dump()`,
      * into the cache. The destination cache is reset before loading new entries
@@ -150,6 +153,8 @@ export declare class LRUCache<K, V> {
      * Manually iterates over the entire cache proactively pruning old entries.
      */
     prune(): this;
-    entries(): IterableIterator<[number, Entry<K, V>]>;
+    entries(): IterableIterator<[K, V]>;
+    toArray(): Entry<K, V>[];
+    [Symbol.iterator](): IterableIterator<[K, V]>;
     static create<K, V>(options?: IOptions<K, V> | number, arr?: ILruEntry<K, V>[]): LRUCache<K, V>;
 }

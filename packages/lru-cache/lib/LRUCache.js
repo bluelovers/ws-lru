@@ -127,6 +127,9 @@ class LRUCache {
     get length() {
         return this[symbol_1.LENGTH];
     }
+    get size() {
+        return this[symbol_1.LENGTH];
+    }
     /**
      * Return total quantity of objects currently in cache. Note,
      * that `stale` (see options) items are returned as part of this item count.
@@ -186,6 +189,9 @@ class LRUCache {
         this[symbol_1.LRU_LIST] = new yallist_1.default(); // list of items in order of use recency
         this[symbol_1.LENGTH] = 0; // length of items in the list
         return this;
+    }
+    clear() {
+        return this.reset();
     }
     /**
      * Return an array of the cache entries ready for serialization and usage with `destinationCache.load(arr)`.
@@ -308,6 +314,9 @@ class LRUCache {
         del_1.del(this, value);
         return value;
     }
+    delete(key) {
+        return this.del(key);
+    }
     /**
      * Loads another cache entries array, obtained with `sourceCache.dump()`,
      * into the cache. The destination cache is reset before loading new entries
@@ -347,8 +356,17 @@ class LRUCache {
         this[symbol_1.CACHE].forEach((value, key) => get_1.get(this, key, false));
         return this;
     }
-    entries() {
-        return this[symbol_1.LRU_LIST].toArray().entries();
+    *entries() {
+        for (let item of this[symbol_1.LRU_LIST]) {
+            yield [item.key, item.value];
+        }
+        //return this[LRU_LIST].toArray().entries()
+    }
+    toArray() {
+        return this[symbol_1.LRU_LIST].toArray();
+    }
+    [Symbol.iterator]() {
+        return this.entries();
     }
     static create(options, arr) {
         let lru = new this(options);

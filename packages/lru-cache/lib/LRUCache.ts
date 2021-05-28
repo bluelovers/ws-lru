@@ -193,6 +193,11 @@ export class LRUCache<K, V>
 		return this[LENGTH]
 	}
 
+	get size()
+	{
+		return this[LENGTH]
+	}
+
 	/**
 	 * Return total quantity of objects currently in cache. Note,
 	 * that `stale` (see options) items are returned as part of this item count.
@@ -270,6 +275,11 @@ export class LRUCache<K, V>
 		this[LENGTH] = 0 // length of items in the list
 
 		return this
+	}
+
+	clear()
+	{
+		return this.reset();
 	}
 
 	/**
@@ -361,7 +371,7 @@ export class LRUCache<K, V>
 	{
 		maxAge ||= this[MAX_AGE]
 
-		let { k: key, v: value, e : now } = raw;
+		let { k: key, v: value, e: now } = raw;
 
 		const len = this[LENGTH_CALCULATOR](value, key)
 		let hit = new Entry(key, value, len, now, maxAge)
@@ -437,6 +447,11 @@ export class LRUCache<K, V>
 		return value
 	}
 
+	delete(key: K)
+	{
+		return this.del(key)
+	}
+
 	/**
 	 * Loads another cache entries array, obtained with `sourceCache.dump()`,
 	 * into the cache. The destination cache is reset before loading new entries
@@ -487,9 +502,23 @@ export class LRUCache<K, V>
 		return this
 	}
 
-	entries()
+	* entries(): IterableIterator<[K, V]>
 	{
-		return this[LRU_LIST].toArray().entries()
+		for (let item of this[LRU_LIST])
+		{
+			yield [item.key as K, item.value as V]
+		}
+		//return this[LRU_LIST].toArray().entries()
+	}
+
+	toArray()
+	{
+		return this[LRU_LIST].toArray()
+	}
+
+	[Symbol.iterator]()
+	{
+		return this.entries()
 	}
 
 	static create<K, V>(options?: IOptions<K, V> | number, arr?: ILruEntry<K, V>[])
