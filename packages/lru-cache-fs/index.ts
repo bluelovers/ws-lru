@@ -1,4 +1,4 @@
-import { readFileSync, writeJSONSync, outputJSONSync } from 'fs-extra';
+import { readFileSync, writeJSONSync, outputJSONSync, WriteOptions } from 'fs-extra';
 import LRUCache from 'lru-cache2';
 import { IOptions, ILruEntry } from 'lru-cache2/lib';
 import { loadCacheFile } from './lib/loadCacheFile';
@@ -31,12 +31,13 @@ export class LRUCacheFS<K, V> extends LRUCache<K, V>
 		return this;
 	}
 
-	fsDump(autoCreate?: boolean)
+	fsDump(autoCreate?: boolean, options?: WriteOptions)
 	{
 		const fn = (autoCreate ?? (this[AUTO_CREATE_FILE_PATH] === true)) ? outputJSONSync : writeJSONSync;
 
 		fn(this[FILENAME], this.dump(), {
-			spaces: 2
+			spaces: 2,
+			...options
 		});
 
 		return this

@@ -1,3 +1,4 @@
+import { WriteOptions } from 'fs-extra';
 import LRUCache from 'lru-cache2';
 import { IOptions } from 'lru-cache2/lib';
 declare const FILENAME: unique symbol;
@@ -11,7 +12,7 @@ export declare class LRUCacheFS<K, V> extends LRUCache<K, V> {
     protected [FILENAME]: string;
     protected [AUTO_CREATE_FILE_PATH]: boolean;
     constructor(options: IOptionsLRUCacheFS<K, V>);
-    fsDump(autoCreate?: boolean): this;
+    fsDump(autoCreate?: boolean, options?: WriteOptions): this;
     static fromFile<K, V>(filename: string, options?: Partial<IOptionsLRUCacheFS<K, V>>): LRUCacheFS<unknown, unknown>;
     static create<K, V>(options: IOptionsLRUCacheFS<K, V>): LRUCacheFS<K, V>;
 }

@@ -18,10 +18,11 @@ class LRUCacheFS extends lru_cache2_1.default {
         this.load(loadCacheFile_1.loadCacheFile(this[FILENAME]));
         return this;
     }
-    fsDump(autoCreate) {
+    fsDump(autoCreate, options) {
         const fn = (autoCreate !== null && autoCreate !== void 0 ? autoCreate : (this[AUTO_CREATE_FILE_PATH] === true)) ? fs_extra_1.outputJSONSync : fs_extra_1.writeJSONSync;
         fn(this[FILENAME], this.dump(), {
-            spaces: 2
+            spaces: 2,
+            ...options
         });
         return this;
     }
