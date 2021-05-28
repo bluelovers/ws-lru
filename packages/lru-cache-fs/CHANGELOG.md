@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.7](https://github.com/bluelovers/ws-lru/compare/lru-cache-fs2@2.0.6...lru-cache-fs2@2.0.7) (2021-05-28)
+
+**Note:** Version bump only for package lru-cache-fs2
+
+
+
+
+
 ## [2.0.6](https://github.com/bluelovers/ws-lru/compare/lru-cache-fs2@2.0.5...lru-cache-fs2@2.0.6) (2021-05-28)
 
 

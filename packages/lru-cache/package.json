@@ -1,6 +1,6 @@
 {
   "name": "lru-cache2",
-  "version": "6.0.5",
+  "version": "6.0.6",
   "description": "A cache object that deletes the least-recently-used items.",
   "keywords": [
     "mru",

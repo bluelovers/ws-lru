@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.6](https://github.com/bluelovers/ws-lru/compare/lru-cache2@6.0.5...lru-cache2@6.0.6) (2021-05-28)
+
+
+### 📦　Code Refactoring
+
+* support Map like api ([3a3ed75](https://github.com/bluelovers/ws-lru/commit/3a3ed75216a111fabd44afa83dbc5a4f760917ab))
+
+
+
+
+
 ## [6.0.5](https://github.com/bluelovers/ws-lru/compare/lru-cache2@6.0.4...lru-cache2@6.0.5) (2020-08-11)
 
 
