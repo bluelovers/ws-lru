@@ -1,7 +1,7 @@
 export class LeastRecentlyMap<K, V> extends Map<K, V>
 {
 
-	set(key: K, value: V)
+	override set(key: K, value: V)
 	{
 		if (this.has(key))
 		{

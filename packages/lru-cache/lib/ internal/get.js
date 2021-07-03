@@ -8,8 +8,8 @@ const get = (self, key, doUse) => {
     const node = self[symbol_1.CACHE].get(key);
     if (node) {
         const hit = node.value;
-        if (isStale_1.isStale(self, hit)) {
-            del_1.del(self, node);
+        if ((0, isStale_1.isStale)(self, hit)) {
+            (0, del_1.del)(self, node);
             if (!self[symbol_1.ALLOW_STALE]) {
                 return undefined;
             }

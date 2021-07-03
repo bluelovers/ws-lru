@@ -6,8 +6,8 @@ const del_1 = require("./del");
 const symbol_1 = require("../symbol");
 const forEachStep = (self, fn, node, thisp) => {
     let hit = node.value;
-    if (isStale_1.isStale(self, hit)) {
-        del_1.del(self, node);
+    if ((0, isStale_1.isStale)(self, hit)) {
+        (0, del_1.del)(self, node);
         if (!self[symbol_1.ALLOW_STALE]) {
             hit = undefined;
         }

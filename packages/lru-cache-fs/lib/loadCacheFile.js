@@ -4,7 +4,7 @@ exports.loadCacheFile = void 0;
 const fs_1 = require("fs");
 function loadCacheFile(filename) {
     try {
-        const file = fs_1.readFileSync(filename, 'utf8');
+        const file = (0, fs_1.readFileSync)(filename, 'utf8');
         return JSON.parse(file.toString());
     }
     catch (e) {

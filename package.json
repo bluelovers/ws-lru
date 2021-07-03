@@ -32,18 +32,18 @@
     "tmp": "^0.2.1"
   },
   "devDependencies": {
-    "@bluelovers/tsconfig": "^1.0.20",
+    "@bluelovers/tsconfig": "^1.0.22",
     "@types/benchmark": "^2.1.0",
     "@types/err-code": "^2.0.0",
     "@types/fs-extra": "^9.0.11",
     "@types/jest": "^26.0.23",
     "@types/lru-cache": "^5.1.0",
     "@types/node": "*",
-    "@types/tmp": "^0.2.0",
-    "@types/yallist": "^4.0.0",
+    "@types/tmp": "^0.2.1",
+    "@types/yallist": "^4.0.1",
     "benchmark": "^2.1.4",
-    "jest": "^27.0.1",
-    "ts-jest": "^27.0.1"
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.3"
   },
   "peerDependencies": {
     "@bluelovers/conventional-changelog-bluelovers": "*",

@@ -1,14 +1,12 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LRUCache = void 0;
+const tslib_1 = require("tslib");
 const symbol_1 = require("./symbol");
 const naiveLength_1 = require("./naiveLength");
 const trim_1 = require("./ internal/trim");
 const forEachStep_1 = require("./ internal/forEachStep");
-const yallist_1 = __importDefault(require("yallist"));
+const yallist_1 = (0, tslib_1.__importDefault)(require("yallist"));
 const isStale_1 = require("./ internal/isStale");
 const Entry_1 = require("./Entry");
 const get_1 = require("./ internal/get");
@@ -59,7 +57,7 @@ class LRUCache {
             throw new TypeError('max must be a non-negative number');
         }
         this[symbol_1.MAX] = mL || Infinity;
-        trim_1.trim(this);
+        (0, trim_1.trim)(this);
     }
     /**
      * resize the cache when the max changes.
@@ -88,7 +86,7 @@ class LRUCache {
             throw new TypeError('maxAge must be a non-negative number');
         }
         this[symbol_1.MAX_AGE] = mA;
-        trim_1.trim(this);
+        (0, trim_1.trim)(this);
     }
     /**
      * Same as Options.maxAge. Resizes the cache when the `maxAge` changes.
@@ -112,7 +110,7 @@ class LRUCache {
                 this[symbol_1.LENGTH] += hit.length;
             });
         }
-        trim_1.trim(this);
+        (0, trim_1.trim)(this);
     }
     /**
      * resize the cache when the lengthCalculator changes.
@@ -145,7 +143,7 @@ class LRUCache {
         thisp = thisp || this;
         for (let walker = this[symbol_1.LRU_LIST].tail; walker !== null;) {
             const prev = walker.prev;
-            forEachStep_1.forEachStep(this, fn, walker, thisp);
+            (0, forEachStep_1.forEachStep)(this, fn, walker, thisp);
             walker = prev;
         }
         return this;
@@ -158,7 +156,7 @@ class LRUCache {
         thisp = thisp || this;
         for (let walker = this[symbol_1.LRU_LIST].head; walker !== null;) {
             const next = walker.next;
-            forEachStep_1.forEachStep(this, fn, walker, thisp);
+            (0, forEachStep_1.forEachStep)(this, fn, walker, thisp);
             walker = next;
         }
         return this;
@@ -197,7 +195,7 @@ class LRUCache {
      * Return an array of the cache entries ready for serialization and usage with `destinationCache.load(arr)`.
      */
     dump() {
-        return this[symbol_1.LRU_LIST].map(hit => isStale_1.isStale(this, hit) ? null : {
+        return this[symbol_1.LRU_LIST].map(hit => (0, isStale_1.isStale)(this, hit) ? null : {
             k: hit.key,
             v: hit.value,
             e: hit.now + (hit.maxAge || 0),
@@ -219,7 +217,7 @@ class LRUCache {
         const len = this[symbol_1.LENGTH_CALCULATOR](value, key);
         if (this[symbol_1.CACHE].has(key)) {
             if (len > this[symbol_1.MAX]) {
-                del_1.del(this, this[symbol_1.CACHE].get(key));
+                (0, del_1.del)(this, this[symbol_1.CACHE].get(key));
                 return false;
             }
             const node = this[symbol_1.CACHE].get(key);
@@ -237,7 +235,7 @@ class LRUCache {
             this[symbol_1.LENGTH] += len - item.length;
             item.length = len;
             this.get(key);
-            trim_1.trim(this);
+            (0, trim_1.trim)(this);
             return true;
         }
         const hit = new Entry_1.Entry(key, value, len, now, maxAge);
@@ -251,7 +249,7 @@ class LRUCache {
         this[symbol_1.LENGTH] += hit.length;
         this[symbol_1.LRU_LIST].unshift(hit);
         this[symbol_1.CACHE].set(key, this[symbol_1.LRU_LIST].head);
-        trim_1.trim(this);
+        (0, trim_1.trim)(this);
         return true;
     }
     _load_add(raw, maxAge) {
@@ -277,7 +275,7 @@ class LRUCache {
         if (!this[symbol_1.CACHE].has(key))
             return false;
         const hit = this[symbol_1.CACHE].get(key).value;
-        return !isStale_1.isStale(this, hit);
+        return !(0, isStale_1.isStale)(this, hit);
     }
     /**
      * Will update the "recently used"-ness of the key. They do what you think.
@@ -286,7 +284,7 @@ class LRUCache {
      * If the key is not found, will return `undefined`.
      */
     get(key) {
-        return get_1.get(this, key, true);
+        return (0, get_1.get)(this, key, true);
     }
     /**
      * Returns the key value (or `undefined` if not found) without updating
@@ -296,14 +294,14 @@ class LRUCache {
      * sort of data structure, but there are some use cases where it's handy.)
      */
     peek(key) {
-        return get_1.get(this, key, false);
+        return (0, get_1.get)(this, key, false);
     }
     pop() {
         const node = this[symbol_1.LRU_LIST].tail;
         if (!node) {
             return null;
         }
-        del_1.del(this, node);
+        (0, del_1.del)(this, node);
         return node.value;
     }
     /**
@@ -311,7 +309,7 @@ class LRUCache {
      */
     del(key) {
         let value = this[symbol_1.CACHE].get(key);
-        del_1.del(this, value);
+        (0, del_1.del)(this, value);
         return value;
     }
     delete(key) {
@@ -346,14 +344,14 @@ class LRUCache {
                 }
             }
         }
-        trim_1.trim(this);
+        (0, trim_1.trim)(this);
         return this;
     }
     /**
      * Manually iterates over the entire cache proactively pruning old entries.
      */
     prune() {
-        this[symbol_1.CACHE].forEach((value, key) => get_1.get(this, key, false));
+        this[symbol_1.CACHE].forEach((value, key) => (0, get_1.get)(this, key, false));
         return this;
     }
     *entries() {

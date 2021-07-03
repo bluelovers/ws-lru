@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@types/yallist": "*",
+    "tslib": "^2.3.0",
     "yallist": "^4"
   },
   "engines": {

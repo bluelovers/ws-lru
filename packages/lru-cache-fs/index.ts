@@ -57,7 +57,7 @@ export class LRUCacheFS<K, V> extends LRUCache<K, V>
 		return cache;
 	}
 
-	static create<K, V>(options: IOptionsLRUCacheFS<K, V>)
+	static override create<K, V>(options: IOptionsLRUCacheFS<K, V>)
 	{
 		return new this(options);
 	}

@@ -10,7 +10,7 @@ const trim = (self) => {
             // what the next least recently used key will be, so just
             // go ahead and set it now.
             const prev = walker.prev;
-            del_1.del(self, walker);
+            (0, del_1.del)(self, walker);
             walker = prev;
         }
     }
