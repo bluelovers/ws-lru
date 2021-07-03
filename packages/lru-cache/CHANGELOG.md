@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.7](https://github.com/bluelovers/ws-lru/compare/lru-cache2@6.0.6...lru-cache2@6.0.7) (2021-07-03)
+
+
+### 🛠　Build System
+
+* use tslib ([4c24edb](https://github.com/bluelovers/ws-lru/commit/4c24edb670df44bc88311345db6d5b290b61bbaa))
+
+
+
+
+
 ## [6.0.6](https://github.com/bluelovers/ws-lru/compare/lru-cache2@6.0.5...lru-cache2@6.0.6) (2021-05-28)
 
 

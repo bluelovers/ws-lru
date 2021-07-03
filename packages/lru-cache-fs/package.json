@@ -1,6 +1,6 @@
 {
   "name": "lru-cache-fs2",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Extends lru-cache to add file system support",
   "keywords": [
     "cache",
@@ -35,7 +35,7 @@
     "env-paths": "^2",
     "err-code": "^3",
     "fs-extra": "^10",
-    "lru-cache2": "^6.0.6",
+    "lru-cache2": "^6.0.7",
     "tslib": "^2.3.0"
   },
   "engine": {

@@ -1,6 +1,6 @@
 {
   "name": "least-recently-record",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Least Recently Map/Set, make every add/set will at end of entries",
   "keywords": [
     "set",
